@@ -231,7 +231,7 @@ def main(ports: list = [],  max_cycle_num: float = 1.5) -> Tuple[List,bool]:
             result = '通过'
 
             round_results = []
-            with concurrent.futures.ThreadPoolExecutor() as executor:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=24) as executor:
                 futures = [executor.submit(test_single_port, port) for port in ports]
                 for future in concurrent.futures.as_completed(futures):
                     port_result, _ = future.result()
@@ -242,7 +242,22 @@ def main(ports: list = [],  max_cycle_num: float = 1.5) -> Tuple[List,bool]:
                             final_result = '不通过'
                             break
             overall_result.extend(round_results)
-            
+            # with concurrent.futures.ProcessPoolExecutor() as executor:
+            #     futures = [executor.submit(test_single_port, port) for port in ports]
+            #     for future in concurrent.futures.as_completed(futures):
+            #         try:
+            #             port_result, _ = future.result()
+            #             round_results.append(port_result)
+            #             for gesture_result in port_result["gestures"]:
+            #                 if gesture_result["result"] != "通过":
+            #                     result = '不通过'
+            #                     final_result = '不通过'
+            #                     break
+            #         except Exception as e:
+            #             print(f"Error processing port test: {e}")
+            #             result = '不通过'
+            # overall_result.extend(round_results)
+
             logger.info(f"#################第 {round_num} 轮测试结束，测试结果：{result}#############\n")
     except Exception as e:
         final_result = '不通过'
