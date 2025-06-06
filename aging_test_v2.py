@@ -231,7 +231,7 @@ def main(ports: list = [],  max_cycle_num: float = 1.5) -> Tuple[List,bool]:
             result = '通过'
 
             round_results = []
-            with concurrent.futures.ThreadPoolExecutor(max_workers=24) as executor:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=64) as executor:
                 futures = [executor.submit(test_single_port, port) for port in ports]
                 for future in concurrent.futures.as_completed(futures):
                     port_result, _ = future.result()

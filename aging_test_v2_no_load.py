@@ -216,7 +216,7 @@ def main(ports=None, max_cycle_num=1):
                 logger.info('无可测试设备')
                 break
             result = '通过'
-            with concurrent.futures.ThreadPoolExecutor(max_workers=24) as executor:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=64) as executor:
                 futures = [executor.submit(run_tests_for_port, port, connected_status) for port in ports]
                 for future in concurrent.futures.as_completed(futures):
                     port_result, _ = future.result()
