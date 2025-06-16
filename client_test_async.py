@@ -72,7 +72,7 @@ class TestClient:
         这个函数创建了测试工具的主窗口，设置了一些基本的变量，
         并创建了界面的初始组件。
         """
-        self.version = 'V0.7'
+        self.version = 'V0.8'
         self.root = tk.Tk()
         self.root.title("测试工具")
         self.root.geometry('1200x800')
@@ -297,7 +297,7 @@ class TestClient:
         这个函数创建一个弹出窗口，显示软件版本、发布时间和版权信息。
         """
         now = datetime.datetime.now()
-        text = f"软件版本: {self.version}\n运行时间: {now.strftime('%Y-%m-%d %H:%M:%S')}\n版权所有© 2015·2024 上海傲意信息科技有限公司"
+        text = f"软件版本: {self.version}\n运行时间: {now.strftime('%Y-%m-%d %H:%M:%S')}\n版权所有© 2015·2025 上海傲意信息科技有限公司"
         tkinter.messagebox.showinfo("版本信息", text)
 
     def show(self):
@@ -383,7 +383,7 @@ class TestClient:
         self.notify_ports.clear()
         for port in ports:
             try:
-                client = ModbusSerialClient(port=port, framer=FramerType.RTU, baudrate=115200)
+                client = ModbusSerialClient(port=port, framer=FramerType.RTU, baudrate=115200,timeout=0.1)
                 status = client.connect()
                 if status:
                      response = client.read_holding_registers(address=1001, count=1, slave=2)
@@ -582,7 +582,7 @@ class TestClient:
         if port == '无可用端口':
            return sw_version
         try:
-            client = ModbusSerialClient(port=port, framer=FramerType.RTU, baudrate=115200)
+            client = ModbusSerialClient(port=port, framer=FramerType.RTU, baudrate=115200,timeout=0.1)
             client.connect()
             logging.info("Successfully connected to Modbus device.")
             response = client.read_holding_registers(ROH_FW_VERSION, 2, NODE_ID)
